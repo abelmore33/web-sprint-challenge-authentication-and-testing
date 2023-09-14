@@ -3,21 +3,26 @@ const bcrypt = require("bcrypt");
 const db = require("../../data/dbConfig");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET, BCRYPT_ROUNDS } = require("../../config/index");
+const { validateUser, checkUserExists } = require("./auth-middleware");
 
-router.post("/register", async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
-    const hash = bcrypt.hashSync(password, 8);
-    req.body.password = hash;
+router.post(
+  "/register",
+  checkUserExists,
+  validateUser,
+  async (req, res, next) => {
+    try {
+      const { username, password } = req.body;
+      const hash = bcrypt.hashSync(password, BCRYPT_ROUNDS);
+      req.body.password = hash;
 
-    const [id] = await db("users").insert(req.body);
-    const [result] = await db("users").where("id", id);
-    res.status(201).json(result);
-  } catch (err) {
-    next(err);
-  }
-  // res.end("implement register, please!");
-  /*
+      const [id] = await db("users").insert(req.body);
+      const [result] = await db("users").where("id", id);
+      res.status(201).json(result);
+    } catch (err) {
+      next(err);
+    }
+    // res.end("implement register, please!");
+    /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
     DO NOT EXCEED 2^8 ROUNDS OF HASHING!
@@ -42,7 +47,8 @@ router.post("/register", async (req, res, next) => {
     4- On FAILED registration due to the `username` being taken,
       the response body should include a string exactly as follows: "username taken".
   */
-});
+  }
+);
 
 router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
