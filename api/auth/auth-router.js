@@ -8,6 +8,7 @@ const { validateUser, checkUserExists } = require("./auth-middleware");
 router.post(
   "/register",
   checkUserExists,
+  validateUser,
 
   async (req, res, next) => {
     try {
