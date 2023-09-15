@@ -25,7 +25,7 @@ describe("Check [get]/api/jokes endpoint functioning correctly", () => {
     const data = await request(server).get("/api/jokes");
     console.log(data);
     expect(data.body).toMatchObject({
-      message: "No Token",
+      message: "Token required",
     });
   });
 
