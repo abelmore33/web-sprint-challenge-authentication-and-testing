@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const db = require("../../data/dbConfig");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../../config/index");
-const { validateUser, checkUserExists } = require("./auth-middleware");
+const { validateUser } = require("./auth-middleware");
 
 router.post(
   "/register",
