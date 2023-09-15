@@ -16,7 +16,7 @@ router.post(
       bcrypt.hashSync(password, BCRYPT_ROUNDS);
       const newUser = {
         username,
-        password: await bcrypt.hashSync(password, BCRYPT_ROUNDS),
+        password: bcrypt.hashSync(password, 5),
       };
 
       const id = await db("users").insert(newUser);
