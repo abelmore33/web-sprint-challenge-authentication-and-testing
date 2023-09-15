@@ -50,7 +50,7 @@ router.post(
   }
 );
 
-router.post("/login", (req, res, next) => {
+router.post("/login", validateUser, (req, res, next) => {
   const { username, password } = req.body;
   try {
     db("users")
@@ -64,8 +64,8 @@ router.post("/login", (req, res, next) => {
           res.status(401).json({ message: "Invalid credentials" });
         }
       });
-  } catch {
-    next();
+  } catch (err) {
+    next(err);
   }
   /*
     IMPLEMENT
