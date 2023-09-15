@@ -20,7 +20,7 @@ router.post(
         password: hash,
       };
 
-      const [id] = await db("users").insert(newUser);
+      const id = await db("users").insert(newUser);
       const [result] = await db("users").where("id", id);
       res.status(201).json(result);
     } catch (err) {
